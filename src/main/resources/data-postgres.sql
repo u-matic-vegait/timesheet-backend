@@ -1,1 +1,1 @@
-insert into users (id, username, password, role) values (1,'luka','$2a$10$zAnwcRbD/Vwmo/JU1GgUze5MR.bIuGYLRPSAv5IlIGWkft5E6qXaS','ADMIN');
+insert into users (username, password, role) values ('luka','$2a$10$zAnwcRbD/Vwmo/JU1GgUze5MR.bIuGYLRPSAv5IlIGWkft5E6qXaS','ADMIN');
