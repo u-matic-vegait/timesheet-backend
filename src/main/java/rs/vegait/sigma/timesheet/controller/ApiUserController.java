@@ -5,11 +5,13 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -64,6 +66,7 @@ public class ApiUserController {
 	public ResponseEntity<UserDto> add(@RequestBody @Validated UserRegistrationDto reqBody) {
 
 		if (reqBody.getId() != null || !reqBody.getPassword().equals(reqBody.getPasswordConfirm())) {
+			System.out.println(reqBody);
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
@@ -76,6 +79,11 @@ public class ApiUserController {
 
 		UserDto respBody = toDto.convert(persisted);
 		return new ResponseEntity<>(respBody, HttpStatus.CREATED);
+	}
+
+	@ExceptionHandler(DataIntegrityViolationException.class)
+	public ResponseEntity<Void> handle() {
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 
 }
