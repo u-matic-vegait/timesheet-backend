@@ -9,13 +9,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import rs.vegait.sigma.timesheet.dto.UserDto;
+import rs.vegait.sigma.timesheet.dto.UserRegistrationDto;
 import rs.vegait.sigma.timesheet.model.User;
 import rs.vegait.sigma.timesheet.service.UserService;
 
@@ -54,6 +58,24 @@ public class ApiUserController {
 		List<User> users = usersPage.getContent();
 		List<UserDto> body = toDtoList.convert(users);
 		return new ResponseEntity<>(body, HttpStatus.OK);
+	}
+
+	@PostMapping
+	public ResponseEntity<UserDto> add(@RequestBody @Validated UserRegistrationDto reqBody) {
+
+		if (reqBody.getId() != null || !reqBody.getPassword().equals(reqBody.getPasswordConfirm())) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+		// UserRegistrationDto nasleđuje UserDto, pa možemo koristiti konverter za njega
+		// ostaje da dodatno konvertujemo polje kojeg u njemu nema - password
+		User toAdd = toUser.convert(reqBody);
+		toAdd.setPassword(reqBody.getPassword());
+
+		User persisted = userService.save(toAdd);
+
+		UserDto respBody = toDto.convert(persisted);
+		return new ResponseEntity<>(respBody, HttpStatus.CREATED);
 	}
 
 }

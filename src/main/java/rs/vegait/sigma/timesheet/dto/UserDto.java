@@ -1,14 +1,14 @@
 package rs.vegait.sigma.timesheet.dto;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Positive;
 
 public class UserDto {
+
+	@Positive
 	private Long id;
 	@NotBlank
 	private String username;
-
-	@NotEmpty
 
 	public Long getId() {
 		return id;
