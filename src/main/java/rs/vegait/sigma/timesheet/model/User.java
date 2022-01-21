@@ -12,7 +12,7 @@ import javax.persistence.Table;
 import rs.vegait.sigma.timesheet.enumerations.UserRole;
 
 @Entity
-@Table(name = "users")
+@Table(name = "\"user\"")
 public class User {
 
 	@Id

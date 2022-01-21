@@ -25,7 +25,7 @@ import rs.vegait.sigma.timesheet.service.UserService;
 
 @RestController
 @RequestMapping(value = "/api/users", produces = MediaType.APPLICATION_JSON_VALUE)
-public class ApiUserController {
+public class UserController {
 
 	@Autowired
 	private UserService userService;
