@@ -6,7 +6,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import rs.vegait.sigma.timesheet.dto.UserDto;
@@ -53,11 +51,19 @@ public class ApiUserController {
 		}
 	}
 
-	@GetMapping
-	public ResponseEntity<List<UserDto>> get(@RequestParam(defaultValue = "0") int page) {
+//	@GetMapping
+//	public ResponseEntity<List<UserDto>> get(@RequestParam(defaultValue = "0") int page) {
+//
+//		Page<User> usersPage = userService.all(page);
+//		List<User> users = usersPage.getContent();
+//		List<UserDto> body = toDtoList.convert(users);
+//		return new ResponseEntity<>(body, HttpStatus.OK);
+//	}
 
-		Page<User> usersPage = userService.all(page);
-		List<User> users = usersPage.getContent();
+	@GetMapping
+	public ResponseEntity<List<UserDto>> getAll() {
+
+		List<User> users = userService.all();
 		List<UserDto> body = toDtoList.convert(users);
 		return new ResponseEntity<>(body, HttpStatus.OK);
 	}
