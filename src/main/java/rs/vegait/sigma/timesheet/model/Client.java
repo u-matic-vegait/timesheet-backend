@@ -26,19 +26,23 @@ public class Client {
 
 	@Column
 	private String country;
-
+	
+	@Column
+	private Boolean isdeleted;
+	
 	public Client() {
-		super();
+		
 	}
-
-	public Client(Long id, String name, String address, String city, Integer zipCode, String country) {
+	public Client(Long id, String name, String address, String city, Integer zipcode, String country,
+			Boolean isdeleted) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.address = address;
 		this.city = city;
-		this.zipcode = zipCode;
+		this.zipcode = zipcode;
 		this.country = country;
+		this.isdeleted = isdeleted;
 	}
 
 	public Long getId() {
@@ -73,12 +77,12 @@ public class Client {
 		this.city = city;
 	}
 
-	public Integer getZipCode() {
+	public Integer getZipcode() {
 		return zipcode;
 	}
 
-	public void setZipCode(Integer zipCode) {
-		this.zipcode = zipCode;
+	public void setZipcode(Integer zipcode) {
+		this.zipcode = zipcode;
 	}
 
 	public String getCountry() {
@@ -88,4 +92,16 @@ public class Client {
 	public void setCountry(String country) {
 		this.country = country;
 	}
+
+	public Boolean getisdeleted() {
+		return isdeleted;
+	}
+
+	public void setState(Boolean isdeleted) {
+		this.isdeleted = isdeleted;
+	}
+
+	
+
+	
 }
