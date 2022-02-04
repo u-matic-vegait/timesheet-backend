@@ -44,6 +44,11 @@ public class ClientController {
 	public ResponseEntity<ClientDto> get(@PathVariable Long id) {
 		Optional<Client> client = clientService.one(id);
 
+		if (client == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+		}
+
 		if (client.isPresent()) {
 			ClientDto body = toDto.convert(client.get());
 			return new ResponseEntity<>(body, HttpStatus.OK);

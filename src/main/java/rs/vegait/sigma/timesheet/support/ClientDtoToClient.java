@@ -30,6 +30,7 @@ public class ClientDtoToClient implements Converter<ClientDto, Client> {
 		target.setCity(source.getCity());
 		target.setZipcode(source.getZipcode());
 		target.setCountry(source.getCountry());
+		target.setIsDeleted(source.getIsDeleted());
 
 		return target;
 	}

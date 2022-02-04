@@ -1,5 +1,6 @@
 package rs.vegait.sigma.timesheet.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,12 +19,31 @@ public class JpaClientService implements ClientService {
 
 	@Override
 	public Optional<Client> one(Long id) {
-		return clientRepository.findById(id);
+
+		Optional<Client> client = clientRepository.findById(id);
+		if (client.get().getisdeleted() == false) {
+			return client;
+		} else {
+			return null;
+		}
+
+		// return clientRepository.findById(id);
 	}
 
 	@Override
 	public List<Client> all() {
-		return clientRepository.findAll();
+
+		List<Client> list = new ArrayList<>();
+		var allClients = clientRepository.findAll();
+
+		for (Client client : allClients) {
+			if (client.getisdeleted() == false) {
+				list.add(client);
+			}
+		}
+
+		return list;
+		// return clientRepository.findAll();
 	}
 
 	@Override
@@ -34,9 +54,8 @@ public class JpaClientService implements ClientService {
 
 	@Override
 	public void delete(Long id) {
-//		Client deleted = clientRepository.getOne(id);
-//		deleted.setIsDeleted(true);
-		clientRepository.deleteById(id);
+		Client deleted = clientRepository.getOne(id);
+		deleted.setIsDeleted(true);
 	}
 
 	@Override
