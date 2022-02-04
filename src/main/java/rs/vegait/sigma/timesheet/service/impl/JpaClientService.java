@@ -43,7 +43,7 @@ public class JpaClientService implements ClientService {
 		}
 
 		return list;
-		// return clientRepository.findAll();
+
 	}
 
 	@Override
@@ -56,6 +56,7 @@ public class JpaClientService implements ClientService {
 	public void delete(Long id) {
 		Client deleted = clientRepository.getOne(id);
 		deleted.setIsDeleted(true);
+		clientRepository.save(deleted);
 	}
 
 	@Override

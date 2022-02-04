@@ -94,13 +94,6 @@ public class ClientController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 
-//		Client deleted = clientService.delete(id);
-//
-//		if (deleted == null) {
-//			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//		}
-//
-//		return new ResponseEntity<>(toDto.convert(deleted), HttpStatus.OK);
 	}
 
 	@PutMapping(consumes = "application/json")
