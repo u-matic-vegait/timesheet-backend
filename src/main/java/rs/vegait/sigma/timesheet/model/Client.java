@@ -26,13 +26,14 @@ public class Client {
 
 	@Column
 	private String country;
-	
+
 	@Column
 	private Boolean isdeleted;
-	
+
 	public Client() {
-		
+
 	}
+
 	public Client(Long id, String name, String address, String city, Integer zipcode, String country,
 			Boolean isdeleted) {
 		super();
@@ -97,11 +98,8 @@ public class Client {
 		return isdeleted;
 	}
 
-	public void setState(Boolean isdeleted) {
+	public void setIsDeleted(Boolean isdeleted) {
 		this.isdeleted = isdeleted;
 	}
 
-	
-
-	
 }
