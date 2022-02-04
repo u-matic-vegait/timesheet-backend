@@ -13,7 +13,7 @@ public interface ClientService {
 
 	Client save(Client toAdd);
 
-	Client delete(Long id);
+	void delete(Long id);
 
 	Optional<Client> findByName(String name);
 

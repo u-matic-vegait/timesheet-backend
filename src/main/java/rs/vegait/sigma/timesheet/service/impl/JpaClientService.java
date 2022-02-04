@@ -33,11 +33,10 @@ public class JpaClientService implements ClientService {
 	}
 
 	@Override
-	public Client delete(Long id) {
-		Client deleted = clientRepository.getOne(id);
-		deleted.setIsDeleted(true);
-		return deleted;
-
+	public void delete(Long id) {
+//		Client deleted = clientRepository.getOne(id);
+//		deleted.setIsDeleted(true);
+		clientRepository.deleteById(id);
 	}
 
 	@Override

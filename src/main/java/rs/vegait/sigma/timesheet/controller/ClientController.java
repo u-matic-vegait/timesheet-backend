@@ -61,7 +61,7 @@ public class ClientController {
 
 	}
 
-	@PostMapping
+	@PostMapping(consumes = "application/json")
 	public ResponseEntity<ClientDto> add(@RequestBody @Validated ClientDto reqBody) {
 
 		if (reqBody.getId() != null) {
@@ -77,21 +77,33 @@ public class ClientController {
 		return new ResponseEntity<>(respBody, HttpStatus.CREATED);
 	}
 
-	@DeleteMapping("/{id}")
-	public ResponseEntity<ClientDto> delete(@PathVariable Long id) {
-		Client deleted = clientService.delete(id);
+	@DeleteMapping(value = "/{id}")
+	public ResponseEntity<Void> delete(@PathVariable Long id) {
 
-		if (deleted == null) {
+		Optional<Client> client = clientService.one(id);
+
+		if (client != null) {
+			clientService.delete(id);
+			return new ResponseEntity<>(HttpStatus.OK);
+		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 
-		return new ResponseEntity<>(toDto.convert(deleted), HttpStatus.OK);
+//		Client deleted = clientService.delete(id);
+//
+//		if (deleted == null) {
+//			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//		}
+//
+//		return new ResponseEntity<>(toDto.convert(deleted), HttpStatus.OK);
 	}
 
-	@PutMapping("/{id}")
-	public ResponseEntity<ClientDto> edit(@Validated @RequestBody ClientDto clientDto, @PathVariable Long id) {
+	@PutMapping(consumes = "application/json")
+	public ResponseEntity<ClientDto> edit(@RequestBody ClientDto clientDto) {
 
-		if (!id.equals(clientDto.getId())) {
+		Optional<Client> client = clientService.one(clientDto.getId());
+
+		if (client == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
