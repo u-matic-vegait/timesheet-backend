@@ -1,46 +1,18 @@
-package rs.vegait.sigma.timesheet.model;
+package rs.vegait.sigma.timesheet.dto;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.validation.constraints.Positive;
 
 import rs.vegait.sigma.timesheet.enumerations.ProjectStatus;
 
-@Entity
-public class Project {
+public class ProjectDto {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Positive
 	private Long id;
 
-	@Column(unique = true, nullable = false)
 	private String name;
-
-	@Column
 	private String description;
-
-	@Enumerated(EnumType.STRING)
 	private ProjectStatus status;
-
-	@Column
 	private Boolean isDeleted;
-
-	public Project() {
-
-	}
-
-	public Project(Long id, String name, String description, ProjectStatus status, Boolean isDeleted) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.description = description;
-		this.status = status;
-		this.isDeleted = isDeleted;
-	}
 
 	public Long getId() {
 		return id;
