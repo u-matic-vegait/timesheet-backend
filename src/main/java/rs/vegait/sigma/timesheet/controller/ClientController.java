@@ -88,11 +88,15 @@ public class ClientController {
 		Optional<Client> client = clientService.one(id);
 
 		if (client != null) {
-			clientService.delete(id);
-			return new ResponseEntity<>(HttpStatus.OK);
-		} else {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			if (client.get().getisdeleted() == false) {
+				clientService.delete(id);
+				return new ResponseEntity<>(HttpStatus.OK);
+
+			} else {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
 		}
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
 	}
 
