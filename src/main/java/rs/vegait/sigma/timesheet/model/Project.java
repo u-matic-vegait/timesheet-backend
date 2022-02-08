@@ -27,7 +27,7 @@ public class Project {
 	private ProjectStatus status;
 
 	@Column
-	private Boolean isDeleted;
+	private Boolean isdeleted;
 
 	public Project() {
 
@@ -39,7 +39,7 @@ public class Project {
 		this.name = name;
 		this.description = description;
 		this.status = status;
-		this.isDeleted = isDeleted;
+		this.isdeleted = isDeleted;
 	}
 
 	public Long getId() {
@@ -75,11 +75,11 @@ public class Project {
 	}
 
 	public Boolean getIsDeleted() {
-		return isDeleted;
+		return isdeleted;
 	}
 
 	public void setIsDeleted(Boolean isDeleted) {
-		this.isDeleted = isDeleted;
+		this.isdeleted = isDeleted;
 	}
 
 }
