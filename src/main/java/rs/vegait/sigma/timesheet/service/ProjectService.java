@@ -7,7 +7,7 @@ import rs.vegait.sigma.timesheet.model.Project;
 
 public interface ProjectService {
 
-	Optional<Project> one(Long id);
+	Optional<Project> findOne(Long id);
 
 	List<Project> all();
 

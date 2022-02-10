@@ -1,6 +1,5 @@
 package rs.vegait.sigma.timesheet.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,40 +7,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import rs.vegait.sigma.timesheet.enumerations.ProjectStatus;
+import rs.vegait.sigma.timesheet.exception.ResourceNotFoundException;
 import rs.vegait.sigma.timesheet.model.Project;
 import rs.vegait.sigma.timesheet.repository.ProjectRepository;
 import rs.vegait.sigma.timesheet.service.ProjectService;
 
 @Service
-public class JpaProjectService implements ProjectService {
+public class ProjectServiceImpl implements ProjectService {
 
 	@Autowired
 	private ProjectRepository projectRepository;
 
 	@Override
-	public Optional<Project> one(Long id) {
+	public Optional<Project> findOne(Long id) {
 
-		Optional<Project> project = projectRepository.findById(id);
-		if (project.get().getIsDeleted() == false) {
-			return project;
-		} else {
-			return null;
+		var project = projectRepository.findById(id);
+
+		if (project.get().getIsDeleted() == true) {
+			throw new ResourceNotFoundException("Not found Project with id = " + id);
 		}
+
+		return project;
 	}
 
 	@Override
 	public List<Project> all() {
-
-		List<Project> list = new ArrayList<>();
-		var allProjects = projectRepository.findAll();
-
-		for (Project project : allProjects) {
-			if (project.getIsDeleted() == false) {
-				list.add(project);
-			}
-		}
-
-		return list;
+		return projectRepository.findByIsdeletedFalse();
 	}
 
 	@Override

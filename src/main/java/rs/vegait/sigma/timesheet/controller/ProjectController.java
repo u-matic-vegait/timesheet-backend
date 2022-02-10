@@ -3,7 +3,6 @@ package rs.vegait.sigma.timesheet.controller;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -21,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import rs.vegait.sigma.timesheet.dto.ProjectDto;
+import rs.vegait.sigma.timesheet.exception.ResourceNotFoundException;
 import rs.vegait.sigma.timesheet.model.Project;
 import rs.vegait.sigma.timesheet.service.ProjectService;
 
@@ -28,33 +28,36 @@ import rs.vegait.sigma.timesheet.service.ProjectService;
 @RequestMapping(value = "/api/projects", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ProjectController {
 
-	@Autowired
 	private ProjectService projectService;
-
-	@Autowired
 	private Converter<Project, ProjectDto> toDto;
-
-	@Autowired
 	private Converter<ProjectDto, Project> toProject;
-
-	@Autowired
 	private Converter<List<Project>, List<ProjectDto>> toDtoList;
+
+	public ProjectController(ProjectService projectService, Converter<Project, ProjectDto> toDto,
+			Converter<ProjectDto, Project> toProject, Converter<List<Project>, List<ProjectDto>> toDtoList) {
+		this.projectService = projectService;
+		this.toDto = toDto;
+		this.toProject = toProject;
+		this.toDtoList = toDtoList;
+	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<ProjectDto> get(@PathVariable Long id) {
-		Optional<Project> project = projectService.one(id);
+//		Optional<Project> project = projectService.findOne(id);
+//
+//		if (!project.isPresent() || project.get().getIsDeleted() == true)
+//			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//
+//		ProjectDto body = toDto.convert(project.get());
+//		return new ResponseEntity<>(body, HttpStatus.OK);
 
-		if (project == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		Project project = projectService.findOne(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Not found Project with id = " + id));
 
-		}
+		ProjectDto body = toDto.convert(project);
 
-		if (project.isPresent()) {
-			ProjectDto body = toDto.convert(project.get());
-			return new ResponseEntity<>(body, HttpStatus.OK);
-		} else {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
+		return new ResponseEntity<>(body, HttpStatus.OK);
+
 	}
 
 	@GetMapping
@@ -70,7 +73,6 @@ public class ProjectController {
 	public ResponseEntity<ProjectDto> add(@RequestBody @Validated ProjectDto reqBody) {
 
 		if (reqBody.getId() != null) {
-			System.out.println(reqBody);
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
@@ -85,25 +87,21 @@ public class ProjectController {
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 
-		Optional<Project> project = projectService.one(id);
+		Optional<Project> project = projectService.findOne(id);
 
-		if (project != null) {
-			if (project.get().getIsDeleted() == false) {
-				projectService.delete(id);
-				return new ResponseEntity<>(HttpStatus.OK);
-
-			} else {
-				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-			}
+		if (!project.isPresent() || project.get().getIsDeleted() == true) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+		projectService.delete(id);
+		return new ResponseEntity<>(HttpStatus.OK);
 
 	}
 
 	@PutMapping(consumes = "application/json")
 	public ResponseEntity<ProjectDto> edit(@RequestBody ProjectDto projectDto) {
 
-		Optional<Project> project = projectService.one(projectDto.getId());
+		Optional<Project> project = projectService.findOne(projectDto.getId());
 
 		if (project == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

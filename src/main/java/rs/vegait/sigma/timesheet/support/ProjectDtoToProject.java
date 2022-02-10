@@ -18,7 +18,7 @@ public class ProjectDtoToProject implements Converter<ProjectDto, Project> {
 	public Project convert(ProjectDto source) {
 		Project target = null;
 		if (source.getId() != null) {
-			target = projectService.one(source.getId()).get();
+			target = projectService.findOne(source.getId()).get();
 		}
 
 		if (target == null) {
