@@ -27,8 +27,8 @@ public class Client {
 	@Column
 	private String country;
 
-	@Column
-	private Boolean isdeleted;
+	@Column(name = "isdeleted")
+	private Boolean isDeleted;
 
 	public Client() {
 
@@ -43,7 +43,7 @@ public class Client {
 		this.city = city;
 		this.zipcode = zipcode;
 		this.country = country;
-		this.isdeleted = isdeleted;
+		this.isDeleted = isdeleted;
 	}
 
 	public Long getId() {
@@ -95,11 +95,11 @@ public class Client {
 	}
 
 	public Boolean getisdeleted() {
-		return isdeleted;
+		return isDeleted;
 	}
 
 	public void setIsDeleted(Boolean isdeleted) {
-		this.isdeleted = isdeleted;
+		this.isDeleted = isdeleted;
 	}
 
 }
