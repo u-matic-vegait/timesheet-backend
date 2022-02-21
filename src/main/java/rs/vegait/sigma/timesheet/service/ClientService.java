@@ -7,7 +7,7 @@ import rs.vegait.sigma.timesheet.model.Client;
 
 public interface ClientService {
 
-	Optional<Client> one(Long id);
+	Optional<Client> findOne(Long id);
 
 	List<Client> all();
 

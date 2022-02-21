@@ -1,6 +1,5 @@
 package rs.vegait.sigma.timesheet.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,37 +11,27 @@ import rs.vegait.sigma.timesheet.repository.ClientRepository;
 import rs.vegait.sigma.timesheet.service.ClientService;
 
 @Service
-public class JpaClientService implements ClientService {
+public class ClientServiceImpl implements ClientService {
 
 	@Autowired
 	private ClientRepository clientRepository;
 
 	@Override
-	public Optional<Client> one(Long id) {
+	public Optional<Client> findOne(Long id) {
 
-		Optional<Client> client = clientRepository.findById(id);
-		if (client.get().getisdeleted() == false) {
-			return client;
-		} else {
-			return null;
+		var client = clientRepository.findById(id);
+
+		if (client.get().getisdeleted() == true) {
+			throw new ResourceNotFoundException("Not found client with id = " + id);
 		}
 
-		// return clientRepository.findById(id);
+		return client;
 	}
 
 	@Override
 	public List<Client> all() {
 
-		List<Client> list = new ArrayList<>();
-		var allClients = clientRepository.findAll();
-
-		for (Client client : allClients) {
-			if (client.getisdeleted() == false) {
-				list.add(client);
-			}
-		}
-
-		return list;
+		return clientRepository.findByIsDeletedFalse();
 
 	}
 
