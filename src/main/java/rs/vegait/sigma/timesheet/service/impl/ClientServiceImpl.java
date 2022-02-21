@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import rs.vegait.sigma.timesheet.exception.ResourceNotFoundException;
 import rs.vegait.sigma.timesheet.model.Client;
 import rs.vegait.sigma.timesheet.repository.ClientRepository;
 import rs.vegait.sigma.timesheet.service.ClientService;

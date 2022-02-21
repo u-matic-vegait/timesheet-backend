@@ -18,7 +18,7 @@ public class ClientDtoToClient implements Converter<ClientDto, Client> {
 	public Client convert(ClientDto source) {
 		Client target = null;
 		if (source.getId() != null) {
-			target = clientService.one(source.getId()).get();
+			target = clientService.findOne(source.getId()).get();
 		}
 
 		if (target == null) {
